@@ -32,24 +32,37 @@ resource "google_service_account" "default" {
   display_name = "Service Account"
 }
 
+# Compute Service account for CloudDeploy to deploy the artifacts in GKE
+resource "google_project_iam_member" "compute_sa_logs_writer" {
+  project = local.project_id
+  role    = "roles/logging.logWriter"
+  member  = "serviceAccount:${google_service_account.default.email}"
+}
+
+resource "google_project_iam_member" "compute_sa_artifactregistry_reader" {
+  project = local.project_id
+  role    = "roles/artifactregistry.reader"
+  member  = "serviceAccount:${google_service_account.default.email}"
+}
+
 resource "google_container_cluster" "primary" {
   name     = "task-cluster"
-  location = data.google_compute_zones.available.names[0]
+  location = local.project_default_region
   project  = local.project_id
 
   remove_default_node_pool = true
   initial_node_count       = 1
 }
 
-resource "google_container_node_pool" "primary_preemptible_nodes" {
-  name       = "task-cluster-node-pool"
-  location   = data.google_compute_zones.available.names[0]
-  project    = local.project_id
-  cluster    = google_container_cluster.primary.name
-  node_count = 2
+resource "google_container_node_pool" "primary_nodes" {
+  name           = "task-cluster-node-pool"
+  location       = local.project_default_region
+  node_locations = [data.google_compute_zones.available.names[0], data.google_compute_zones.available.names[1]]
+  project        = local.project_id
+  cluster        = google_container_cluster.primary.name
+  node_count     = 2
 
   node_config {
-    preemptible     = true
     service_account = google_service_account.default.email
     oauth_scopes = [
       "https://www.googleapis.com/auth/cloud-platform"
@@ -57,5 +70,15 @@ resource "google_container_node_pool" "primary_preemptible_nodes" {
     machine_type = "n1-standard-2"
     image_type   = "COS"
     disk_size_gb = 50
+    disk_type    = "pd-standard"
   }
+}
+
+resource "google_artifact_registry_repository" "repo" {
+  provider      = google-beta
+  project       = local.project_id
+  location      = local.project_default_region
+  repository_id = "flask-api"
+  description   = "Docker repository"
+  format        = "DOCKER"
 }

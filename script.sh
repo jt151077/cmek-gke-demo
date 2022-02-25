@@ -67,23 +67,4 @@ EOF
 
 eval "terraform init -reconfigure"
 eval "terraform apply -auto-approve"
-
-# Create tools folder
-BIN_FOLDER=$PWD/bin
-if [ ! -d "$BIN_FOLDER" ]; then
-    eval "mkdir $BIN_FOLDER"
-fi
-
-# Install K8S CLI
-K8S_EXEC=$PWD/bin/kubectl
-
-if [ ! -f "$K8S_EXEC" ]; then
-    cd $BIN_FOLDER
-
-    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-    chmod +x kubectl
-    cd ../
-fi
-
-export PATH="$BIN_FOLDER:$PATH"
 eval "kubectl version --client"
