@@ -1,7 +1,7 @@
 import os
 import json
 from flask import Flask, request, jsonify
-from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy, inspect
 
 dbuser = os.environ['POSTGRES_USER']
 dbpass = os.environ['POSTGRES_PASSWORD']
@@ -10,6 +10,11 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://{}:{}@postgres:5432/flaskapi'.format(dbuser, dbpass)
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
+
+
+def object_as_dict(obj):
+    return {c.key: getattr(obj, c.key)
+            for c in inspect(obj).mapper.column_attrs}
 
 
 class Users(db.Model):
@@ -50,8 +55,11 @@ def add_user():
 @app.route("/list", methods=["GET"])
 def get_user():
     """Function to get all users to the Postgres database"""
-    results = Users.query.order_by(Users.id).all()
-    lst = [dict(row.items()) for row in results]
+    results = db.session.query(Users).order_by(Users.id).all()
+    lst = []
+
+    for user in results:
+        lst.append(object_as_dict(user))
 
     return json.dumps(lst)
 
