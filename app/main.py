@@ -1,4 +1,5 @@
 import os
+import json
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 
@@ -31,7 +32,7 @@ def index():
 
 @app.route("/create", methods=["POST"])
 def add_user():
-    """Function to add a user to the MySQL database"""
+    """Function to add a user to the Postgres database"""
     json = request.json
     name = json["name"]
     email = json["email"]
@@ -44,6 +45,16 @@ def add_user():
         return jsonify(str(user))
     else:
         return jsonify("Please provide name, email and pwd")
+
+
+@app.route("/list", methods=["GET"])
+def get_user():
+    """Function to get all users to the Postgres database"""
+    results = Users.query.order_by(Users.id).all()
+    lst = [dict(row.items()) for row in results]
+
+    return json.dumps(lst)
+
 
 
 if __name__ == "__main__":

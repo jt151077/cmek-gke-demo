@@ -52,6 +52,17 @@ resource "google_container_cluster" "primary" {
 
   remove_default_node_pool = true
   initial_node_count       = 1
+
+  addons_config {
+    http_load_balancing {
+      disabled = false
+    }
+  }
+
+  node_config {
+    service_account = google_service_account.default.email
+    boot_disk_kms_key = google_kms_crypto_key.flaskapp-key.id
+  }
 }
 
 resource "google_container_node_pool" "primary_nodes" {
@@ -67,10 +78,11 @@ resource "google_container_node_pool" "primary_nodes" {
     oauth_scopes = [
       "https://www.googleapis.com/auth/cloud-platform"
     ]
-    machine_type = "n1-standard-2"
-    image_type   = "COS"
-    disk_size_gb = 50
-    disk_type    = "pd-standard"
+    machine_type      = "n1-standard-2"
+    image_type        = "COS"
+    disk_size_gb      = 50
+    disk_type         = "pd-standard"
+    boot_disk_kms_key = google_kms_crypto_key.flaskapp-key.id
   }
 }
 
@@ -81,4 +93,9 @@ resource "google_artifact_registry_repository" "repo" {
   repository_id = "flask-api"
   description   = "Docker repository"
   format        = "DOCKER"
+}
+
+resource "google_compute_global_address" "api-static-address" {
+  name    = "flaskapi-static-address"
+  project = local.project_id
 }

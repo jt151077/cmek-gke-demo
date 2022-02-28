@@ -43,4 +43,13 @@ resource "google_project_organization_policy" "vmExternalIpAccess" {
   }
 }
 
+
+resource "google_project_organization_policy" "vmCanIpForward" {
+  project    = local.project_id
+  constraint = "compute.vmCanIpForward"
+
+  boolean_policy {
+    enforced = false
+  }
+}
 */

@@ -78,3 +78,15 @@ resource "google_project_service" "artifactregistry-api" {
 
   disable_dependent_services = true
 }
+
+resource "google_project_service" "cloudkms-api" {
+  project = local.project_id
+  service = "cloudkms.googleapis.com"
+
+  timeouts {
+    create = "30m"
+    update = "40m"
+  }
+
+  disable_dependent_services = true
+}

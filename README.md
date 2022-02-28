@@ -10,7 +10,7 @@ kubectl apply -f k8s/postgres-secrets.yaml
 kubectl apply -f k8s/postgres-pv.yaml 
 kubectl apply -f k8s/postgres-deployment.yaml 
 kubectl apply -f k8s/postgres-service.yaml
-gcloud builds submit — config=cloudbuild.yaml
+gcloud builds submit --config=cloudbuild.yaml
 
 
 POD=`kubectl get pods -l service=postgres -o wide | grep -v NAME | awk '{print $1}'`
