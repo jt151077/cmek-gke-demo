@@ -67,4 +67,37 @@ EOF
 
 eval "terraform init -reconfigure"
 eval "terraform apply -auto-approve"
-eval "kubectl version --client"
+
+
+# GKE setup
+gcloud container clusters get-credentials task-cluster --region europe-west1
+gcloud components install kubectl
+kubectl apply -f k8s/postgres-secrets.yaml 
+kubectl apply -f k8s/postgres-pv.yaml 
+kubectl apply -f k8s/postgres-deployment.yaml 
+kubectl apply -f k8s/postgres-service.yaml
+gcloud builds submit --config=cloudbuild.yaml
+
+echo 'Is the database created?'
+echo '[0]: YES'
+echo '[1]: NO'
+
+read -p 'DB Created?: ' db
+
+case $db in
+
+    0)
+        kubectl apply -f k8s/flaskapp-deployment.yaml 
+        ;;
+
+    1)
+        echo "Refer to README to create the DB"
+        ;;
+
+    *)
+        echo "Unknown choice. Type 0 or 1"
+        exit 0
+        ;;
+esac
+
+
