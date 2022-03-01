@@ -87,7 +87,9 @@ case $db in
 
     0)
         gcloud builds submit --config=cloudbuild.yaml
+        kubectl apply -f k8s/flaskapp-service.yaml 
         kubectl apply -f k8s/flaskapp-deployment.yaml 
+        kubectl apply -f k8s/flaskapp-network.yaml 
         ;;
 
     1)
