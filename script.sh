@@ -76,7 +76,6 @@ kubectl apply -f k8s/postgres-secrets.yaml
 kubectl apply -f k8s/postgres-pv.yaml 
 kubectl apply -f k8s/postgres-deployment.yaml 
 kubectl apply -f k8s/postgres-service.yaml
-gcloud builds submit --config=cloudbuild.yaml
 
 echo 'Is the database created?'
 echo '[0]: YES'
@@ -87,6 +86,7 @@ read -p 'DB Created?: ' db
 case $db in
 
     0)
+        gcloud builds submit --config=cloudbuild.yaml
         kubectl apply -f k8s/flaskapp-deployment.yaml 
         ;;
 
