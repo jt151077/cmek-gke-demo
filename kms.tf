@@ -45,3 +45,7 @@ resource "google_kms_key_ring_iam_policy" "flaskapp-keyring-policy" {
   key_ring_id = google_kms_key_ring.keyring.id
   policy_data = data.google_iam_policy.flaskapp-policy.policy_data
 }
+
+output "cmek-key-id" {
+  value = google_kms_crypto_key.flaskapp-key.id
+}

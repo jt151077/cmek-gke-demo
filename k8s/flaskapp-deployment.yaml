@@ -63,11 +63,12 @@ spec:
       port:
         number: 6000
 
----
-apiVersion: networking.gke.io/v1
-kind: ManagedCertificate
-metadata:
-  name: flaskapi-cert
-spec:
-  domains:
-    - "jeremyto.altostrat.com"
+
+#---
+#apiVersion: networking.gke.io/v1
+#kind: ManagedCertificate
+#metadata:
+#  name: flaskapi-cert
+#spec:
+#  domains:
+#    - "jeremyto.altostrat.com"
