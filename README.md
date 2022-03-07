@@ -30,5 +30,5 @@ kubectl apply -f k8s/flaskapp-service.yaml
 kubectl apply -f k8s/flaskapp-deployment.yaml 
 kubectl apply -f k8s/flaskapp-network.yaml 
 
-curl -H "Content-Type: application/json" -d '{"name": "Jeremy Toussaint", "email": "jt151077@gmail.com", "pwd": "qwert"}' http://34.79.166.251:5000/create
+curl -H "Content-Type: application/json" -d '{"name": "Jeremy Toussaint", "email": "jt151077@gmail.com", "pwd": "qwert"}' http://<STATIC_IP>:5000/create
 
