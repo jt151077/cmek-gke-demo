@@ -1,7 +1,7 @@
 ![Component architecture](./infra.png)
 
-Source: https://cloud.google.com/architecture/deploying-highly-available-postgresql-with-gke
-Source: https://testdriven.io/blog/running-flask-on-kubernetes/
+* Source: https://cloud.google.com/architecture/deploying-highly-available-postgresql-with-gke
+* Source: https://testdriven.io/blog/running-flask-on-kubernetes/
 
 0. task-cluster-sa@cmek-gke-demo.iam.gserviceaccount.com
 gcloud container clusters get-credentials task-cluster --region europe-west1
