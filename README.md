@@ -1,3 +1,5 @@
+![Component architecture](./infra.png)
+
 Source: https://cloud.google.com/architecture/deploying-highly-available-postgresql-with-gke
 Source: https://testdriven.io/blog/running-flask-on-kubernetes/
 
