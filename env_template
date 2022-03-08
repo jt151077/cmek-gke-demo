@@ -1,0 +1,5 @@
+export PROJECTID="<PROJECT_ID>" # ProjectID we will use for the creation
+export LOCATION="<LOCATION>"                           # We recomend to use EU or US
+export REGION="<REGION>"
+export ZONE="<ZONE>"
+export CLUSTER_NAME="<GKE_CLUSTER_NAME>"

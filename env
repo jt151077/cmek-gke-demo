@@ -1,0 +1,6 @@
+export PROJECTID="cmek-gke-demo" # ProjectID we will use for the creation
+export PROJECT_NUMBER="234687475375" # ProjectID we will use for the creation
+export LOCATION="eu"                           # We recomend to use EU or US
+export REGION="europe-west1"
+export ZONE="europe-west1-b"
+export CLUSTER_NAME="task-cluster"

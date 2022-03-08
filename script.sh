@@ -1,13 +1,6 @@
 #!/bin/bash
 
-export PROJECTID="cmek-gke-demo" # ProjectID we will use for the creation
-export PROJECT_NUMBER="234687475375" # ProjectID we will use for the creation
-export GCP_ORGID="693611386598"              # Id of your organisation
-export BILLING_ACCOUNT_ID="012A11-72C990-37B541"      # to be used by the imde project
-export LOCATION="eu"                           # We recomend to use EU or US
-export REGION="europe-west1"
-export ZONE="europe-west1-b"
-export CLUSTER_NAME="task-cluster"
+source ./env
 
 gcloud config set project ${PROJECTID}
 gcloud config set compute/zone ${ZONE}
