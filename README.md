@@ -16,6 +16,7 @@ Make sure you have installed:
 :~$ echo "YOUR_USERNAME" | base64
 ```
 * Write the output values for each of these commands in `k8s/postgres-secrets.yaml`
+* Rename `env_template` to `env` and set the correct values for your Google project
 
 
 # Install
